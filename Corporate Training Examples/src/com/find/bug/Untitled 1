@@ -1,0 +1,47 @@
+Can you identify and fix the bug in the email validation method?  
+
+
+A company's user registration system is rejecting valid email addresses.
+
+public boolean isValidEmail(String email) {
+    String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
+    Pattern pattern = Pattern.compile(emailRegex);
+    return pattern.matcher(email) == null;
+}
+
+Answer:
+---------------->
+
+Correct Implementation
+Here's how you can fix the method:
+
+Use matches() Method:
+
+The matches() method of the Matcher class should be used to check if the entire email string matches the regex pattern.
+Update the Return Statement:
+
+The method should return the result of pattern.matcher(email).matches(), which will correctly indicate whether the email is valid according to the regex.
+Updated Method
+Here's the corrected implementation:
+
+java
+Copy code
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
+public boolean isValidEmail(String email) {
+    // Updated regex pattern to better match valid email formats
+    String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}$";
+    Pattern pattern = Pattern.compile(emailRegex);
+    Matcher matcher = pattern.matcher(email);
+    return matcher.matches(); // Return true if the email matches the pattern
+}
+Explanation
+Regex Pattern:
+
+^[A-Za-z0-9+_.-]+ ensures that the local part of the email (before the '@') contains only alphanumeric characters and certain special characters.
+@[A-Za-z0-9.-]+ ensures that the domain part (after the '@') contains only alphanumeric characters and dots.
+\\.[A-Z|a-z]{2,}$ ensures that the email ends with a period followed by at least two letters (for the top-level domain).
+Using matches():
+
+pattern.matcher(email).matches() returns true if the entire email string matches the pattern and false otherwise.
